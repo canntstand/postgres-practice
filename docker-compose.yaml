@@ -1,0 +1,26 @@
+services:
+  postgresql:
+    container_name: psql
+    image: postgres:17
+    restart: always
+    shm_size: 128mb
+    environment:
+      POSTGRES_PASSWORD: pwd
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./base_backup:/var/lib/postgresql/base_backup
+      - ./wal_archive:/var/lib/postgresql/wal_archive
+  
+  postgresql-recovery:
+    container_name: psql-recovery
+    image: postgres:17
+    restart: always
+    shm_size: 128mb
+    environment:
+      POSTGRES_PASSWORD: pwd
+    volumes:
+      - ./base_backup:/var/lib/postgresql/data
+      - ./wal_archive:/var/lib/postgresql/wal_archive
+
+volumes:
+  postgres_data:
